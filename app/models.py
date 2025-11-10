@@ -1,5 +1,6 @@
 from django.db import models
 from decimal import Decimal
+from django.templatetags.static import static
 
 # Create your models here.
 
@@ -33,5 +34,11 @@ class Product(models.Model):
         
         return self.price
     
+    @property
+    def get_image_url(self):
+        if not self.image:
+            return static('app/images/not_found_image.avif')
+        return self.image.url
+    
     def __str__(self):
-        return self.name 
+        return self.name
