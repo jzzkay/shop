@@ -1,6 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Category, Product
 from .forms import ProductForm
+from django.contrib.auth.decorators import login_required
+from .models import Order
+from .forms import OrderForm
+from .models import Comment
+from .forms import CommentForm
+
 
 # Create your views here.
 
@@ -55,3 +61,35 @@ def delete_product(request, product_id):
         return redirect('app:index')
     return render(request, 'app/delete_product.html', {'product': product})
 
+@login_required
+def place_order(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.user = request.user
+            order.product = product
+            order.save()
+            return redirect('app:order_success')
+    else:
+        form = OrderForm()
+    return render(request, 'app/place_order.html', {'form': form, 'product': product})
+
+def order_success(request):
+    return render(request, 'app/order_success.html')
+
+@login_required
+def add_comment(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.product = product
+            comment.save()
+            return redirect('app:product_detail', product_id=product.id)
+    else:
+        form = CommentForm()
+    return render(request, 'app/add_comment.html', {'form': form, 'product': product})
