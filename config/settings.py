@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,3 +127,20 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Shop",
+    "site_header": "Shop",
+    "welcome_sign": "Welcome to My Shop Admin",
+    "copyright": "Shop",
+
+    "search_model": ["app.Product", "app.Category"],
+
+    "show_ui_builder": False,
+
+    "site_brand": "Shop",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "white",
+}
